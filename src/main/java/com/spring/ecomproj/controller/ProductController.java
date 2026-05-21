@@ -19,12 +19,10 @@ public class ProductController {
 
     @Autowired
     private ProdcutService prodcutService;
-
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts(){
         return new ResponseEntity<>(prodcutService.getAllProducts(), HttpStatus.OK);
     }
-
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
         Product product= prodcutService.getProductById(id);
@@ -33,23 +31,23 @@ public class ProductController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
     @PostMapping("/product")
     public ResponseEntity<?>  addproduct(@RequestPart Product product , @RequestPart MultipartFile imageFile){
-
         try {
            Product product1= prodcutService.addProduct(product, imageFile);
            return  new ResponseEntity<>(product1, HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-
     }
     @GetMapping("/product/{productId}/image")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable int productId){
         Product product= prodcutService.getProductById(productId);
         byte[] imageFile= product.getImageDate();
         return ResponseEntity.ok().contentType(MediaType.valueOf(product.getImageType())).body(imageFile);
+    }
+
+    public ResponseEntity<String> updateProduct(@PathVariable int id, @RequestPart Product product){
+        Product product1= prodcutService.
     }
 }
